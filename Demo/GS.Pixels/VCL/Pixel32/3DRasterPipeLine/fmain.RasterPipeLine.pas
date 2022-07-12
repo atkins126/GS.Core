@@ -47,6 +47,7 @@ type
     ApplicationEvents1: TApplicationEvents;
     Panel2: TPanel;
     TreeView1: TTreeView;
+    Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure FormDestroy(Sender: TObject);
@@ -59,6 +60,7 @@ type
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     procedure FormResize(Sender: TObject);
     procedure cbClick(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
     { Private declarations }
     M,MLD : TPoint;
@@ -125,7 +127,7 @@ begin
   MyObjectList := TS3DObjectList.Create; //3d Object.
   MyMeshList := TS3DMeshList.Create; //Assets for 3d object !
 
-  pixel := TPixel32.create;     //final surface draewing... (image)
+  pixel := TPixel32.create;     //final surface drawing... (image)
 
   viewport := TView3d.Create; //virtual window on 3d world.
 
@@ -307,32 +309,7 @@ begin
 end;
 
 procedure TForm7.GUI_UpdateLog;
-var l : TStringList;
-    t : TTreeNode;
-    i : integer;
 begin
-  l :=  TStringList.Create;
-  try
-    l.Text := TMonitoring.Reports;
-    if TreeView1.Items.Count>0 then
-    begin
-      for i :=0 to l.Count-1 do
-      begin
-        TreeView1.Items[i].Text := l[i];
-      end;
-    end
-    else
-    begin
-      t := TreeView1.Items.AddChild(nil,l[0]);
-      t := TreeView1.Items.AddChild(t,l[1]);
-      for i :=2 to l.Count-1 do
-      begin
-        TreeView1.Items.AddChild(t,l[i]);
-      end;
-    end;
-  finally
-    FreeAndNil(l);
-  end;
 end;
 
 procedure TForm7.Image1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -366,6 +343,14 @@ begin
       My3DObj.rx := MLD.Y-y;
     end;
   end;
+end;
+
+procedure TForm7.Timer1Timer(Sender: TObject);
+var al : single;
+begin
+  al := Cos((TThread.GetTickCount/1000));
+  viewport.SetCamPos(0,0,16+al*2);
+//  viewport.SetCamRotate(0,al,0);
 end;
 
 procedure TForm7.TimerFPSTimer(Sender: TObject);

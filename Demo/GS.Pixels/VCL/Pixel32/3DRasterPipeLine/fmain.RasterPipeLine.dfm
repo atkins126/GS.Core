@@ -10,7 +10,7 @@ object Form7: TForm7
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
+  OldCreateOrder = True
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnMouseWheel = FormMouseWheel
@@ -153,5 +153,11 @@ object Form7: TForm7
     OnIdle = ApplicationEvents1Idle
     Left = 40
     Top = 72
+  end
+  object Timer1: TTimer
+    Interval = 10
+    OnTimer = Timer1Timer
+    Left = 512
+    Top = 304
   end
 end
